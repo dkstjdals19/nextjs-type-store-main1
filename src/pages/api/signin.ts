@@ -1,13 +1,11 @@
-// @/pages/api/signin.ts
-
-import { connectDB } from "@/Utils/db";
+// src/pages/api/signin.ts
 import { NextApiRequest, NextApiResponse } from "next";
+import { connectDB } from "@/Utils/db";
 
-// /api/signin 으로 접속하면 동작할 함수 (API)
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log('/api/signin 들어옴');
 
-  // CORS 설정 (테스트용, 모든 IP 허용)
+  // CORS 설정 (테스트용)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
@@ -18,12 +16,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     if (req.method === 'POST') {
-      // req.body 안전하게 처리
       const { email, password } = req.body as { email: string; password: string };
       console.log('요청 body:', { email, password });
 
       // DB 연결
-      const client = await connectDB;  // connectDB가 함수라고 가정
+      const client = await connectDB; // db.ts에서는 이미 Promise<MongoClient>
       const db = client.db('mydb');
 
       // 사용자 찾기
